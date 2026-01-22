@@ -22,6 +22,32 @@ public class Flores {
                 System.out.println(horizontalLine);
                 continue;
             }
+
+            if (input.startsWith("todo ")) {
+                Task t = new Todo(input.substring(5));
+                items.add(t);
+                printAddedMessage(t, items.size());
+                continue;
+
+            } else if (input.startsWith("deadline ")) {
+                // Splits "deadline return book /by Sunday" into ["return book", "Sunday"]
+                String[] parts = input.substring(9).split(" /by ");
+                Task t = new Deadline(parts[0], parts[1]);
+                items.add(t);
+                printAddedMessage(t, items.size());
+                continue;
+
+            } else if (input.startsWith("event ")) {
+                // Parses "event meeting /from Mon 2pm /to 4pm"
+                String[] parts = input.substring(6).split(" /from ");
+                String description = parts[0];
+                String[] timeParts = parts[1].split(" /to ");
+                Task t = new Event(description, timeParts[0], timeParts[1]);
+                items.add(t);
+                printAddedMessage(t, items.size());
+                continue;
+            }
+
             if (input.startsWith("mark ")) {
                 // used google gemini for this logic
                 int index = Integer.parseInt(input.substring(5)) - 1;
@@ -48,11 +74,16 @@ public class Flores {
                 break;
             }
 
-            items.add(new Task(input));
-            System.out.println("added: " + input);
             System.out.println(horizontalLine);
 
         }
         sc.close();
+    }
+
+    public static void printAddedMessage(Task task, int size) {
+        System.out.println(" Got it. I've added this task:");
+        System.out.println("   " + task);
+        System.out.println(" Now you have " + size + " tasks in the list.");
+        System.out.println("____________________________________________________________");
     }
 }
