@@ -86,6 +86,21 @@ public class Flores {
                     continue;
                 }
 
+                // deleting a task
+                if (input.startsWith("delete ")) {
+                    int index = Integer.parseInt(input.substring(7)) - 1;
+                    if (index < 0 || index >= items.size()) {
+                        throw new FloresException("That task number does not exist.");
+                    }
+                    Task removedTask = items.get(index);
+                    items.remove(index);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("   " + removedTask);
+                    System.out.println(" Now you have " + items.size() + " tasks in the list.");
+                    System.out.println(horizontalLine);
+                    continue;
+                }
+
                 if (input.equalsIgnoreCase("bye")) {
                     System.out.println("Bye. Hope to see you again soon!");
                     System.out.println(horizontalLine);
