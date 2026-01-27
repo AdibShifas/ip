@@ -26,4 +26,10 @@ public class Task {
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }
+
+    public String toFileString() {
+        // 0 for not done, 1 for done
+        String status = isDone ? "1" : "0";
+        return status + " | " + description;
+    }
 }

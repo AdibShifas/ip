@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-
+import java.io.*;
 public class Flores {
     public static void main(String[] args) {
         String horizontalLine = "____________________________________________________________";
@@ -12,6 +12,7 @@ public class Flores {
         Scanner sc = new Scanner(System.in);
         // arraylist to store each input
         ArrayList<Task> items = new ArrayList<>();
+        loadTasks(items);
         while (true) {
             String input = sc.nextLine();
 
@@ -37,6 +38,7 @@ public class Flores {
                         Task t = new Todo(input.substring(5));
                         items.add(t);
                         printAddedMessage(t, items.size());
+                        saveTasks(items);
                         continue;
 
                     case DEADLINE:
@@ -51,6 +53,7 @@ public class Flores {
                         Task d = new Deadline(parts[0], parts[1]);
                         items.add(d);
                         printAddedMessage(d, items.size());
+                        saveTasks(items);
                         continue;
 
                     case EVENT:
@@ -67,6 +70,7 @@ public class Flores {
                         Task e = new Event(description, timeParts[0], timeParts[1]);
                         items.add(e);
                         printAddedMessage(e, items.size());
+                        saveTasks(items);
                         continue;
 
                     case MARK:
@@ -76,6 +80,7 @@ public class Flores {
                         System.out.println("Nice! I've marked this task as done:");
                         System.out.println(" " + items.get(markIndex));
                         System.out.println(horizontalLine);
+                        saveTasks(items);
                         continue;
 
                     case UNMARK:
@@ -85,6 +90,7 @@ public class Flores {
                         System.out.println("OK, I've marked this task as not done yet:");
                         System.out.println(" " + items.get(unmarkIndex));
                         System.out.println(horizontalLine);
+                        saveTasks(items);
                         continue;
 
                     case DELETE:
@@ -99,6 +105,7 @@ public class Flores {
                         System.out.println("   " + removedTask);
                         System.out.println(" Now you have " + items.size() + " tasks in the list.");
                         System.out.println(horizontalLine);
+                        saveTasks(items);
                         continue;
 
                     case BYE:
@@ -142,5 +149,61 @@ public class Flores {
         System.out.println("   " + task);
         System.out.println(" Now you have " + size + " tasks in the list.");
         System.out.println("____________________________________________________________");
+    }
+
+    public static void saveTasks(ArrayList<Task> items) {
+        try {
+            File folder = new File("./data");
+            if (!folder.exists()) folder.mkdirs();
+            FileWriter fw = new FileWriter("./data/flores.txt");
+            for (Task t : items) {
+                fw.write(t.toFileString() + System.lineSeparator());
+            }
+            fw.close();
+        } catch (IOException e){
+            System.out.println("Error Saving: " + e.getMessage());
+        }
+    }
+
+    public static void loadTasks(ArrayList<Task> items) {
+        File file = new File("./data/flores.txt");
+        if (!file.exists()) return;
+
+        try {
+            Scanner s = new Scanner(file);
+            while (s.hasNext()) {
+                String line = s.nextLine();
+                if (line.trim().isEmpty()) continue;
+
+                String[] parts = line.split(" \\| ");
+
+                if (parts.length < 3) continue;
+
+                String type = parts[0];
+                boolean isDone = parts[1].equals("1");
+                String desc = parts[2];
+
+                Task t = null;
+                try {
+                    if (type.equals("T")) {
+                        t = new Todo(desc);
+                    } else if (type.equals("D") && parts.length >= 4) {
+                        t = new Deadline(desc, parts[3]);
+                    } else if (type.equals("E") && parts.length >= 5) {
+                        t = new Event(desc, parts[3], parts[4]);
+                    }
+
+                    if (t != null) {
+                        if (isDone) t.markAsDone();
+                        items.add(t);
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Skipping corrupted line: " + line);
+                }
+            }
+            s.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("No previous save file found.");
+        }
     }
 }
