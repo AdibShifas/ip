@@ -48,12 +48,15 @@ public class Flores {
                         if (!input.contains(" /by ")) {
                             throw new FloresException("A deadline must have a /by time.");
                         }
-                        // Splits "deadline return book /by Sunday" into ["return book", "Sunday"]
-                        String[] parts = input.substring(9).split(" /by ");
-                        Task d = new Deadline(parts[0], parts[1]);
-                        items.add(d);
-                        printAddedMessage(d, items.size());
-                        saveTasks(items);
+                        try {
+                            String[] parts = input.substring(9).split(" /by ");
+                            Task d = new Deadline(parts[0], parts[1]);
+                            items.add(d);
+                            printAddedMessage(d, items.size());
+                            saveTasks(items);
+                        } catch (java.time.format.DateTimeParseException e) {
+                            throw new FloresException("Please use the date format: yyyy-mm-dd (e.g., 2026-01-27)");
+                        }
                         continue;
 
                     case EVENT:
@@ -63,14 +66,17 @@ public class Flores {
                         if (!input.contains(" /from ") || !input.contains(" /to ")) {
                             throw new FloresException("An event must have /from and /to times.");
                         }
-                        // Parses "event meeting /from Mon 2pm /to 4pm"
-                        String[] eventParts = input.substring(6).split(" /from ");
-                        String description = eventParts[0];
-                        String[] timeParts = eventParts[1].split(" /to ");
-                        Task e = new Event(description, timeParts[0], timeParts[1]);
-                        items.add(e);
-                        printAddedMessage(e, items.size());
-                        saveTasks(items);
+                        try {
+                            String[] eventParts = input.substring(6).split(" /from ");
+                            String description = eventParts[0];
+                            String[] timeParts = eventParts[1].split(" /to ");
+                            Task e = new Event(description, timeParts[0], timeParts[1]);
+                            items.add(e);
+                            printAddedMessage(e, items.size());
+                            saveTasks(items);
+                        } catch (java.time.format.DateTimeParseException err) {
+                            throw new FloresException("Please use the date format: yyyy-mm-dd (e.g., 2026-01-27)");
+                        }
                         continue;
 
                     case MARK:
