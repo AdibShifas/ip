@@ -1,4 +1,5 @@
 package flores.parser;
+
 import flores.exception.FloresException;
 
 public class Parser {
@@ -45,12 +46,26 @@ public class Parser {
         String[] timeParts = eventParts[1].split(" /to ");
 
         // Returns {description, from, to}
-        return new String[] { description, timeParts[0], timeParts[1] };
+        return new String[]{description, timeParts[0], timeParts[1]};
     }
 
     // Returns the index for Mark/Unmark/Delete commands
     public static int getIndex(String input, String commandType) {
         // commandType would be "mark", "unmark", or "delete"
         return Integer.parseInt(input.substring(commandType.length()).trim()) - 1;
+    }
+
+    /**
+     * Extracts the search keyword from the find command input.
+     *
+     * @param input The raw user input (e.g., "find book").
+     * @return The keyword to search for.
+     * @throws FloresException If the keyword is missing.
+     */
+    public static String getFindKeyword(String input) throws FloresException {
+        if (input.trim().equalsIgnoreCase("find")) {
+            throw new FloresException("What am I supposed to find? Give me a keyword!");
+        }
+        return input.substring(5).trim();
     }
 }

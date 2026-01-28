@@ -80,6 +80,12 @@ public class Flores {
                         ui.showRemovedMessage(removed, tasks.size());
                         break;
 
+                    case FIND:
+                        String keyword = Parser.getFindKeyword(fullCommand);
+                        TaskList foundTasks = tasks.find(keyword);
+                        ui.showTaskList(foundTasks);
+                        break;
+
                     case BYE:
                         isExit = true;
                         ui.showMessage("Bye. Hope to see you again soon!");

@@ -30,4 +30,20 @@ public class TaskList {
     public ArrayList<Task> getAll() {
         return tasks;
     }
+
+    /**
+     * Filters the tasks to find descriptions containing the given keyword.
+     *
+     * @param keyword The string to search for within task descriptions.
+     * @return A new TaskList containing only the matching tasks.
+     */
+    public TaskList find(String keyword) {
+        ArrayList<Task> filtered = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                filtered.add(t);
+            }
+        }
+        return new TaskList(filtered);
+    }
 }
