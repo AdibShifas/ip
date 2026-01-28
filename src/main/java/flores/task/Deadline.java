@@ -1,12 +1,22 @@
 package flores.task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-public class Deadline extends Task {
-    protected LocalDate by;
 
+/**
+ * Represents a task that needs to be completed by a specific date.
+ */
+public class Deadline extends Task {
+    private LocalDate by;
+
+    /**
+     * Constructs a Deadline task with a description and a due date.
+     *
+     * @param description The details of the task.
+     * @param by          The deadline date in yyyy-mm-dd format.
+     */
     public Deadline(String description, String by) {
         super(description);
-        // Assumes input format is yyyy-mm-dd
         this.by = LocalDate.parse(by);
     }
 
@@ -18,6 +28,6 @@ public class Deadline extends Task {
 
     @Override
     public String toFileString() {
-        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + by;
+        return "D | " + (getIsDone() ? "1" : "0") + " | " + getDescription() + " | " + by;
     }
 }
