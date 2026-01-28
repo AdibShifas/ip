@@ -1,0 +1,4 @@
+package flores.parser;
+public enum Command {
+    TODO, DEADLINE, EVENT, MARK, UNMARK, DELETE, LIST, BYE, UNKNOWN
+}
