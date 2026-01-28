@@ -4,8 +4,8 @@ package flores.task;
  * A task consists of a description and a status indicating whether it is completed.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private String description;
+    private boolean isDone;
 
     /**
      * Constructs a new Task with the given description.
@@ -51,13 +51,22 @@ public class Task {
     }
 
     /**
+     * Returns true if task is completed, false otherwise.
+     *
+     * @return Whether task is completed or not.
+     */
+    public boolean getIsDone() {
+        return isDone;
+    }
+
+    /**
      * Returns a string representation of the task for UI display.
      *
      * @return A formatted string showing status and description.
      */
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getStatusIcon() + "] " + getDescription();
     }
 
     /**
@@ -67,6 +76,6 @@ public class Task {
      */
     public String toFileString() {
         String status = isDone ? "1" : "0";
-        return status + " | " + description;
+        return status + " | " + getDescription();
     }
 }

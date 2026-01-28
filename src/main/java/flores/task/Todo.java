@@ -1,4 +1,5 @@
 package flores.task;
+
 /**
  * Represents a simple task without any date or time constraints.
  */
