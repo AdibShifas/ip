@@ -1,4 +1,5 @@
 package flores.storage;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,15 +7,29 @@ import flores.task.Task;
 import flores.task.Todo;
 import flores.task.Deadline;
 import flores.task.Event;
-import flores.task.TaskList;
 
+/**
+ * Handles the loading and saving of task data to a local file.
+ * This class is responsible for the persistence of the task list in the Flores application.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object with a specified file path.
+     *
+     * @param filePath The path to the file where task data is stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the provided list of tasks to the storage file.
+     * If the directory or file does not exist, they will be created.
+     *
+     * @param items The list of tasks to be written to the file.
+     */
     public void save(ArrayList<Task> items) {
         try {
             File file = new File(filePath);
@@ -29,6 +44,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads the list of tasks from the storage file.
+     * Parses each line of the file and reconstructs the appropriate Task objects.
+     * Returns an empty list if the file does not exist.
+     *
+     * @return An ArrayList containing the tasks loaded from the file.
+     */
     public ArrayList<Task> load() {
         ArrayList<Task> items = new ArrayList<>();
         File file = new File(filePath);
@@ -65,7 +87,6 @@ public class Storage {
                     System.out.println("Skipping corrupted line: " + line);
                 }
             }
-            s.close();
         } catch (FileNotFoundException e) {
             System.out.println("No save file found.");
         }

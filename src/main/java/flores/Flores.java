@@ -4,30 +4,46 @@ import flores.task.Task;
 import flores.task.Todo;
 import flores.task.Deadline;
 import flores.task.Event;
-import flores.task.TaskList; // If you moved TaskList to flores.task
+import flores.task.TaskList;
 import flores.ui.Ui;
 import flores.storage.Storage;
 import flores.parser.Parser;
 import flores.parser.Command;
 import flores.exception.FloresException;
 
+/**
+ * The main class for the Flores chatbot application.
+ * Flores is a task management tool that allows users to track todos, deadlines, and events.
+ * It coordinates between the user interface, file storage, and command parsing logic.
+ */
 public class Flores {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Initializes a new Flores application instance.
+     * Sets up the UI, loads existing tasks from the specified file path,
+     * and prepares the task list.
+     *
+     * @param filePath The local system path where task data is saved and loaded.
+     */
     public Flores(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
         tasks = new TaskList(storage.load());
     }
 
+    /**
+     * Starts the main execution loop of the Flores application.
+     * Displays the welcome message and continuously processes user commands
+     * until the "bye" command is received.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
 
         while (!isExit) {
-            // Instead of input
             String fullCommand = ui.readCommand();
             ui.showLine();
             try {
@@ -89,7 +105,6 @@ public class Flores {
                         throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
                 }
 
-                // Only saves if the command wasn't BYE or UNKNOWN
                 if (cmd != Command.BYE && cmd != Command.UNKNOWN) {
                     storage.save(tasks.getAll());
                 }
@@ -103,6 +118,11 @@ public class Flores {
         }
     }
 
+    /**
+     * The entry point for starting the Flores application.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         new Flores("./data/flores.txt").run();
     }
