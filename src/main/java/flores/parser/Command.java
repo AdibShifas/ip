@@ -37,6 +37,10 @@ public enum Command {
      */
     BYE,
     /**
+     * Command to search for a task
+     */
+    FIND,
+    /**
      * Represents an unrecognized or invalid command.
      */
     UNKNOWN

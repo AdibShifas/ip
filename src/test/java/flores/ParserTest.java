@@ -1,11 +1,11 @@
 package flores;
 
+import flores.exception.FloresException;
+import flores.parser.Parser;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
-import flores.parser.Parser;
-import flores.exception.FloresException;
 
 public class ParserTest {
     @Test

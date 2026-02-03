@@ -2,8 +2,5 @@ T | 1 | read book
 T | 0 | meet friend
 D | 0 | return book | 2026-02-07
 E | 0 | workshop | 2026-02-06 | 2026-02-07
-<<<<<<< Updated upstream
-=======
 T | 0 | 2103t week 3
 D | 0 | IS2218 Assignment 2 | 2026-02-10
->>>>>>> Stashed changes
