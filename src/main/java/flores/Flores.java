@@ -1,15 +1,11 @@
 package flores;
 
-import flores.task.Task;
-import flores.task.Todo;
-import flores.task.Deadline;
-import flores.task.Event;
-import flores.task.TaskList;
-import flores.ui.Ui;
-import flores.storage.Storage;
-import flores.parser.Parser;
-import flores.parser.Command;
 import flores.exception.FloresException;
+import flores.parser.Command;
+import flores.parser.Parser;
+import flores.storage.Storage;
+import flores.task.*;
+import flores.ui.Ui;
 
 /**
  * The main class for the Flores chatbot application.
@@ -39,6 +35,7 @@ public class Flores {
      * Displays the welcome message and continuously processes user commands
      * until the "bye" command is received.
      */
+    @SuppressWarnings("checkstyle:Indentation")
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
