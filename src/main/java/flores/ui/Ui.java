@@ -53,12 +53,16 @@ public class Ui {
      *
      * @param message The error details to be displayed.
      */
-    public void showError(String message) {
+    public void showError(String... message) {
         System.out.println(getError(message));
     }
 
-    public String getError(String message) {
-        return " HUH?? " + message;
+    public String getError(String... message) {
+        StringBuilder sb = new StringBuilder();
+        for (String m : message) {
+            sb.append(" HUH?? ").append(m).append("\n");
+        }
+        return sb.toString().trim();
     }
 
     /**
@@ -73,8 +77,10 @@ public class Ui {
      *
      * @param message The text to be printed.
      */
-    public void showMessage(String message) {
-        System.out.println(message);
+    public void showMessage(String... message) {
+        for (String m : message) {
+            System.out.println(m);
+        }
     }
 
     /**

@@ -77,13 +77,13 @@ public class Flores {
                     case MARK:
                         int markIdx = Parser.getIndex(fullCommand, "mark");
                         tasks.get(markIdx).markAsDone();
-                        ui.showMessage("Nice! I've marked this task as done:\n " + tasks.get(markIdx));
+                        ui.showMessage("Nice! I've marked this task as done:", " " + tasks.get(markIdx));
                         break;
 
                     case UNMARK:
                         int unmarkIdx = Parser.getIndex(fullCommand, "unmark");
                         tasks.get(unmarkIdx).markAsNotDone();
-                        ui.showMessage("OK, I've marked this task as not done yet:\n " + tasks.get(unmarkIdx));
+                        ui.showMessage("OK, I've marked this task as not done yet:", " " + tasks.get(unmarkIdx));
                         break;
 
                     case DELETE:
