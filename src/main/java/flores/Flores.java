@@ -9,8 +9,10 @@ import flores.ui.Ui;
 
 /**
  * The main class for the Flores chatbot application.
- * Flores is a task management tool that allows users to track todos, deadlines, and events.
- * It coordinates between the user interface, file storage, and command parsing logic.
+ * Flores is a task management tool that allows users to track todos, deadlines,
+ * and events.
+ * It coordinates between the user interface, file storage, and command parsing
+ * logic.
  */
 public class Flores {
     private Storage storage;
@@ -128,5 +130,87 @@ public class Flores {
      */
     public static void main(String[] args) {
         new Flores("./data/flores.txt").run();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    @SuppressWarnings("checkstyle:Indentation")
+    public String getResponse(String input) {
+        try {
+            Command cmd = Parser.getCommand(input);
+            String response = "";
+
+            switch (cmd) {
+                case LIST:
+                    response = ui.getTaskList(tasks);
+                    break;
+
+                case TODO:
+                    String todoDesc = Parser.getTodoDescription(input);
+                    Task t = new Todo(todoDesc);
+                    tasks.add(t);
+                    response = ui.getAddedMessage(t, tasks.size());
+                    break;
+
+                case DEADLINE:
+                    String[] deadlineData = Parser.getDeadlineData(input);
+                    Task d = new Deadline(deadlineData[0], deadlineData[1]);
+                    tasks.add(d);
+                    response = ui.getAddedMessage(d, tasks.size());
+                    break;
+
+                case EVENT:
+                    String[] eventData = Parser.getEventData(input);
+                    Task e = new Event(eventData[0], eventData[1], eventData[2]);
+                    tasks.add(e);
+                    response = ui.getAddedMessage(e, tasks.size());
+                    break;
+
+                case MARK:
+                    int markIdx = Parser.getIndex(input, "mark");
+                    tasks.get(markIdx).markAsDone();
+                    response = "Nice! I've marked this task as done:\n " + tasks.get(markIdx);
+                    break;
+
+                case UNMARK:
+                    int unmarkIdx = Parser.getIndex(input, "unmark");
+                    tasks.get(unmarkIdx).markAsNotDone();
+                    response = "OK, I've marked this task as not done yet:\n " + tasks.get(unmarkIdx);
+                    break;
+
+                case DELETE:
+                    int delIdx = Parser.getIndex(input, "delete");
+                    if (delIdx < 0 || delIdx >= tasks.size()) {
+                        throw new FloresException("That task number does not exist.");
+                    }
+                    Task removed = tasks.delete(delIdx);
+                    response = ui.getRemovedMessage(removed, tasks.size());
+                    break;
+
+                case FIND:
+                    String keyword = Parser.getFindKeyword(input);
+                    TaskList foundTasks = tasks.find(keyword);
+                    response = ui.getTaskList(foundTasks);
+                    break;
+
+                case BYE:
+                    response = "Bye. Hope to see you again soon!";
+                    break;
+
+                default:
+                    throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
+            }
+
+            if (cmd != Command.BYE && cmd != Command.UNKNOWN) {
+                storage.save(tasks.getAll());
+            }
+            return response;
+
+        } catch (FloresException e) {
+            return ui.getError(e.getMessage());
+        } catch (Exception e) {
+            return ui.getError("Something went wrong: " + e.getMessage());
+        }
     }
 }

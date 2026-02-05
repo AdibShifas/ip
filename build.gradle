@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'checkstyle'
 }
@@ -12,6 +13,14 @@ repositories {
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
+    
+    // JavaFX dependencies are handled by the plugin, but explicit might be needed if plugin issues arise.
+    // The plugin handles standard javafx modules.
+}
+
+javafx {
+    version = "17.0.7"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 test {
@@ -29,7 +38,7 @@ test {
 }
 
 application {
-    mainClass = 'flores.Flores'
+    mainClass = 'flores.Launcher'
 }
 
 shadowJar {
