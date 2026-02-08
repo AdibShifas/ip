@@ -53,4 +53,5 @@ checkstyle {
 
 run{
     standardInput = System.in
+    jvmArgs = ['-ea']
 }

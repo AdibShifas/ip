@@ -54,6 +54,7 @@ public class Ui {
      * @param message The error details to be displayed.
      */
     public void showError(String... message) {
+        assert message != null : "Error message cannot be null";
         System.out.println(getError(message));
     }
 
