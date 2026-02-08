@@ -9,11 +9,20 @@ import flores.exception.FloresException;
  */
 public class Parser {
 
+    private static final String TODO_CMD = "todo";
+    private static final String DEADLINE_CMD = "deadline";
+    private static final String EVENT_CMD = "event";
+    private static final String FIND_CMD = "find";
+    private static final String BY_KEYWORD = " /by ";
+    private static final String FROM_KEYWORD = " /from ";
+    private static final String TO_KEYWORD = " /to ";
+
     /**
      * Parses the first word of the user input to determine the command type.
      *
      * @param input The full raw input string from the user.
-     * @return The corresponding {@code Command} enum, or {@code Command.UNKNOWN} if not recognized.
+     * @return The corresponding {@code Command} enum, or {@code Command.UNKNOWN} if
+     *         not recognized.
      */
     public static Command getCommand(String input) {
         String cmd = input.split(" ")[0].toUpperCase();
@@ -32,60 +41,67 @@ public class Parser {
      * @throws FloresException If the description is empty.
      */
     public static String getTodoDescription(String input) throws FloresException {
-        if (input.trim().equalsIgnoreCase("todo")) {
+        if (input.trim().equalsIgnoreCase(TODO_CMD)) {
             throw new FloresException("The description of a todo cannot be empty.");
         }
-        return input.substring(5).trim();
+        return input.substring(TODO_CMD.length() + 1).trim();
     }
 
     /**
      * Extracts the description and deadline time for a Deadline task.
      *
      * @param input The raw input string (e.g., "deadline return book /by Monday").
-     * @return A String array where index 0 is the description and index 1 is the deadline time.
-     * @throws FloresException If the description is empty or the "/by" keyword is missing.
+     * @return A String array where index 0 is the description and index 1 is the
+     *         deadline time.
+     * @throws FloresException If the description is empty or the "/by" keyword is
+     *                         missing.
      */
     public static String[] getDeadlineData(String input) throws FloresException {
-        if (input.trim().equalsIgnoreCase("deadline")) {
+        if (input.trim().equalsIgnoreCase(DEADLINE_CMD)) {
             throw new FloresException("The description of a deadline cannot be empty.");
         }
-        if (!input.contains(" /by ")) {
+        if (!input.contains(BY_KEYWORD)) {
             throw new FloresException("A deadline must have a /by time.");
         }
-        return input.substring(9).split(" /by ");
+        return input.substring(DEADLINE_CMD.length() + 1).split(BY_KEYWORD);
     }
 
     /**
      * Extracts the description, start time, and end time for an Event task.
      *
      * @param input The raw input string (e.g., "event meeting /from 2pm /to 4pm").
-     * @return A String array where index 0 is the description, index 1 is the start time, and index 2 is the end time.
-     * @throws FloresException If the description is empty or the "/from" or "/to" keywords are missing.
+     * @return A String array where index 0 is the description, index 1 is the start
+     *         time, and index 2 is the end time.
+     * @throws FloresException If the description is empty or the "/from" or "/to"
+     *                         keywords are missing.
      */
     public static String[] getEventData(String input) throws FloresException {
-        if (input.trim().equalsIgnoreCase("event")) {
+        if (input.trim().equalsIgnoreCase(EVENT_CMD)) {
             throw new FloresException("The description of an event cannot be empty.");
         }
-        if (!input.contains(" /from ") || !input.contains(" /to ")) {
+        if (!input.contains(FROM_KEYWORD) || !input.contains(TO_KEYWORD)) {
             throw new FloresException("An event must have /from and /to times.");
         }
 
         // Input: event project meeting /from 2026-01-28 /to 2026-01-29
-        String content = input.substring(6); // remove "event "
-        String[] eventParts = content.split(" /from ");
+        String content = input.substring(EVENT_CMD.length() + 1); // remove "event "
+        String[] eventParts = content.split(FROM_KEYWORD);
         String description = eventParts[0];
-        String[] timeParts = eventParts[1].split(" /to ");
+        String[] timeParts = eventParts[1].split(TO_KEYWORD);
 
         // Returns {description, from, to}
-        return new String[]{description, timeParts[0], timeParts[1]};
+        return new String[] { description, timeParts[0], timeParts[1] };
     }
 
     /**
-     * Extracts the task index from the user input for commands like mark, unmark, or delete.
-     * Converts the user's 1-based index into a 0-based index for internal list access.
+     * Extracts the task index from the user input for commands like mark, unmark,
+     * or delete.
+     * Converts the user's 1-based index into a 0-based index for internal list
+     * access.
      *
      * @param input       The full raw input string.
-     * @param commandType The command keyword (e.g., "delete") used to determine the substring offset.
+     * @param commandType The command keyword (e.g., "delete") used to determine the
+     *                    substring offset.
      * @return The 0-based index of the target task.
      * @throws NumberFormatException If the provided index is not a valid integer.
      */
@@ -102,7 +118,7 @@ public class Parser {
      * @throws FloresException If the keyword is missing.
      */
     public static String getFindKeyword(String input) throws FloresException {
-        if (input.trim().equalsIgnoreCase("find")) {
+        if (input.trim().equalsIgnoreCase(FIND_CMD)) {
             throw new FloresException("What am I supposed to find? Give me a keyword!");
         }
         return input.substring(5).trim();
