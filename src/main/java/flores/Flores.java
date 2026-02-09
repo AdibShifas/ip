@@ -39,6 +39,9 @@ public class Flores {
      */
     @SuppressWarnings("checkstyle:Indentation")
     public void run() {
+        assert ui != null : "Ui should be initialized";
+        assert storage != null : "Storage should be initialized";
+        assert tasks != null : "TaskList should be initialized";
         ui.showWelcome();
         boolean isExit = false;
 
@@ -143,6 +146,7 @@ public class Flores {
 
             switch (cmd) {
                 case LIST:
+                    assert tasks != null : "TaskList should be initialized before listing";
                     response = ui.getTaskList(tasks);
                     break;
 
