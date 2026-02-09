@@ -25,6 +25,7 @@ public class Parser {
      *         not recognized.
      */
     public static Command getCommand(String input) {
+        assert input != null : "Input cannot be null";
         String cmd = input.split(" ")[0].toUpperCase();
         try {
             return Command.valueOf(cmd);
@@ -41,6 +42,7 @@ public class Parser {
      * @throws FloresException If the description is empty.
      */
     public static String getTodoDescription(String input) throws FloresException {
+        assert input.toLowerCase().startsWith(TODO_CMD) : "Input must start with '" + TODO_CMD + "'";
         if (input.trim().equalsIgnoreCase(TODO_CMD)) {
             throw new FloresException("The description of a todo cannot be empty.");
         }
@@ -57,6 +59,8 @@ public class Parser {
      *                         missing.
      */
     public static String[] getDeadlineData(String input) throws FloresException {
+        assert input.toLowerCase().contains(DEADLINE_CMD) : "Input must contain '" + DEADLINE_CMD + "'";
+        assert input.contains(BY_KEYWORD) : "Input must contain '" + BY_KEYWORD + "'";
         if (input.trim().equalsIgnoreCase(DEADLINE_CMD)) {
             throw new FloresException("The description of a deadline cannot be empty.");
         }
@@ -76,6 +80,9 @@ public class Parser {
      *                         keywords are missing.
      */
     public static String[] getEventData(String input) throws FloresException {
+        assert input.toLowerCase().contains(EVENT_CMD) : "Input must contain '" + EVENT_CMD + "'";
+        assert input.contains(FROM_KEYWORD) : "Input must contain '" + FROM_KEYWORD + "'";
+        assert input.contains(TO_KEYWORD) : "Input must contain '" + TO_KEYWORD + "'";
         if (input.trim().equalsIgnoreCase(EVENT_CMD)) {
             throw new FloresException("The description of an event cannot be empty.");
         }
@@ -106,6 +113,7 @@ public class Parser {
      * @throws NumberFormatException If the provided index is not a valid integer.
      */
     public static int getIndex(String input, String commandType) {
+        assert commandType != null : "Command type cannot be null";
         // commandType would be "mark", "unmark", or "delete"
         return Integer.parseInt(input.substring(commandType.length()).trim()) - 1;
     }

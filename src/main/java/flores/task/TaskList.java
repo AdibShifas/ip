@@ -14,14 +14,17 @@ public class TaskList {
     }
 
     public void add(Task t) {
+        assert t != null : "Task to add cannot be null";
         tasks.add(t);
     }
 
     public Task delete(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds for delete";
         return tasks.remove(index);
     }
 
     public Task get(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds for get";
         return tasks.get(index);
     }
 
@@ -40,6 +43,7 @@ public class TaskList {
      * @return A new TaskList containing only the matching tasks.
      */
     public TaskList find(String keyword) {
+        assert keyword != null : "Keyword cannot be null";
         ArrayList<Task> filtered = new ArrayList<>();
         for (Task t : tasks) {
             if (t.getDescription().toLowerCase().contains(keyword.toLowerCase())) {

@@ -39,6 +39,9 @@ public class Flores {
      */
     @SuppressWarnings("checkstyle:Indentation")
     public void run() {
+        assert ui != null : "Ui should be initialized";
+        assert storage != null : "Storage should be initialized";
+        assert tasks != null : "TaskList should be initialized";
         ui.showWelcome();
         boolean isExit = false;
 
@@ -90,8 +93,9 @@ public class Flores {
                 storage.save(tasks.getAll());
             }
             return response;
+        } catch (
 
-        } catch (FloresException e) {
+        FloresException e) {
             return ui.getError(e.getMessage());
         } catch (Exception e) {
             return ui.getError("Something went wrong: " + e.getMessage());
