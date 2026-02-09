@@ -9,6 +9,14 @@ import flores.exception.FloresException;
  */
 public class Parser {
 
+    private static final String TODO_CMD = "todo";
+    private static final String DEADLINE_CMD = "deadline";
+    private static final String EVENT_CMD = "event";
+    private static final String FIND_CMD = "find";
+    private static final String BY_KEYWORD = " /by ";
+    private static final String FROM_KEYWORD = " /from ";
+    private static final String TO_KEYWORD = " /to ";
+
     /**
      * Parses the first word of the user input to determine the command type.
      *
@@ -34,11 +42,11 @@ public class Parser {
      * @throws FloresException If the description is empty.
      */
     public static String getTodoDescription(String input) throws FloresException {
-        assert input.toLowerCase().startsWith("todo") : "Input must start with 'todo'";
-        if (input.trim().equalsIgnoreCase("todo")) {
+        assert input.toLowerCase().startsWith(TODO_CMD) : "Input must start with '" + TODO_CMD + "'";
+        if (input.trim().equalsIgnoreCase(TODO_CMD)) {
             throw new FloresException("The description of a todo cannot be empty.");
         }
-        return input.substring(5).trim();
+        return input.substring(TODO_CMD.length() + 1).trim();
     }
 
     /**
@@ -51,15 +59,15 @@ public class Parser {
      *                         missing.
      */
     public static String[] getDeadlineData(String input) throws FloresException {
-        assert input.toLowerCase().contains("deadline") : "Input must contain 'deadline'";
-        assert input.contains(" /by ") : "Input must contain ' /by '";
-        if (input.trim().equalsIgnoreCase("deadline")) {
+        assert input.toLowerCase().contains(DEADLINE_CMD) : "Input must contain '" + DEADLINE_CMD + "'";
+        assert input.contains(BY_KEYWORD) : "Input must contain '" + BY_KEYWORD + "'";
+        if (input.trim().equalsIgnoreCase(DEADLINE_CMD)) {
             throw new FloresException("The description of a deadline cannot be empty.");
         }
-        if (!input.contains(" /by ")) {
+        if (!input.contains(BY_KEYWORD)) {
             throw new FloresException("A deadline must have a /by time.");
         }
-        return input.substring(9).split(" /by ");
+        return input.substring(DEADLINE_CMD.length() + 1).split(BY_KEYWORD);
     }
 
     /**
@@ -72,21 +80,21 @@ public class Parser {
      *                         keywords are missing.
      */
     public static String[] getEventData(String input) throws FloresException {
-        assert input.toLowerCase().contains("event") : "Input must contain 'event'";
-        assert input.contains(" /from ") : "Input must contain ' /from '";
-        assert input.contains(" /to ") : "Input must contain ' /to '";
-        if (input.trim().equalsIgnoreCase("event")) {
+        assert input.toLowerCase().contains(EVENT_CMD) : "Input must contain '" + EVENT_CMD + "'";
+        assert input.contains(FROM_KEYWORD) : "Input must contain '" + FROM_KEYWORD + "'";
+        assert input.contains(TO_KEYWORD) : "Input must contain '" + TO_KEYWORD + "'";
+        if (input.trim().equalsIgnoreCase(EVENT_CMD)) {
             throw new FloresException("The description of an event cannot be empty.");
         }
-        if (!input.contains(" /from ") || !input.contains(" /to ")) {
+        if (!input.contains(FROM_KEYWORD) || !input.contains(TO_KEYWORD)) {
             throw new FloresException("An event must have /from and /to times.");
         }
 
         // Input: event project meeting /from 2026-01-28 /to 2026-01-29
-        String content = input.substring(6); // remove "event "
-        String[] eventParts = content.split(" /from ");
+        String content = input.substring(EVENT_CMD.length() + 1); // remove "event "
+        String[] eventParts = content.split(FROM_KEYWORD);
         String description = eventParts[0];
-        String[] timeParts = eventParts[1].split(" /to ");
+        String[] timeParts = eventParts[1].split(TO_KEYWORD);
 
         // Returns {description, from, to}
         return new String[] { description, timeParts[0], timeParts[1] };
@@ -118,7 +126,7 @@ public class Parser {
      * @throws FloresException If the keyword is missing.
      */
     public static String getFindKeyword(String input) throws FloresException {
-        if (input.trim().equalsIgnoreCase("find")) {
+        if (input.trim().equalsIgnoreCase(FIND_CMD)) {
             throw new FloresException("What am I supposed to find? Give me a keyword!");
         }
         return input.substring(5).trim();

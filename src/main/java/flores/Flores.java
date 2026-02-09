@@ -51,69 +51,13 @@ public class Flores {
             try {
                 Command cmd = Parser.getCommand(fullCommand);
 
-                switch (cmd) {
-                    case LIST:
-                        ui.showTaskList(tasks);
-                        break;
-
-                    case TODO:
-                        String todoDesc = Parser.getTodoDescription(fullCommand);
-                        Task t = new Todo(todoDesc);
-                        tasks.add(t);
-                        ui.showAddedMessage(t, tasks.size());
-                        break;
-
-                    case DEADLINE:
-                        String[] deadlineData = Parser.getDeadlineData(fullCommand);
-                        Task d = new Deadline(deadlineData[0], deadlineData[1]);
-                        tasks.add(d);
-                        ui.showAddedMessage(d, tasks.size());
-                        break;
-
-                    case EVENT:
-                        String[] eventData = Parser.getEventData(fullCommand);
-                        Task e = new Event(eventData[0], eventData[1], eventData[2]);
-                        tasks.add(e);
-                        ui.showAddedMessage(e, tasks.size());
-                        break;
-
-                    case MARK:
-                        int markIdx = Parser.getIndex(fullCommand, "mark");
-                        tasks.get(markIdx).markAsDone();
-                        ui.showMessage("Nice! I've marked this task as done:", " " + tasks.get(markIdx));
-                        break;
-
-                    case UNMARK:
-                        int unmarkIdx = Parser.getIndex(fullCommand, "unmark");
-                        tasks.get(unmarkIdx).markAsNotDone();
-                        ui.showMessage("OK, I've marked this task as not done yet:", " " + tasks.get(unmarkIdx));
-                        break;
-
-                    case DELETE:
-                        int delIdx = Parser.getIndex(fullCommand, "delete");
-                        if (delIdx < 0 || delIdx >= tasks.size()) {
-                            throw new FloresException("That task number does not exist.");
-                        }
-                        Task removed = tasks.delete(delIdx);
-                        ui.showRemovedMessage(removed, tasks.size());
-                        break;
-
-                    case FIND:
-                        String keyword = Parser.getFindKeyword(fullCommand);
-                        TaskList foundTasks = tasks.find(keyword);
-                        ui.showTaskList(foundTasks);
-                        break;
-
-                    case BYE:
-                        isExit = true;
-                        ui.showMessage("Bye. Hope to see you again soon!");
-                        break;
-
-                    default:
-                        throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
+                if (cmd == Command.BYE) {
+                    isExit = true;
                 }
+                String response = executeCommand(cmd, fullCommand);
+                ui.showMessage(response);
 
-                if (cmd != Command.BYE && cmd != Command.UNKNOWN) {
+                if (cmd != Command.BYE && cmd != Command.UNKNOWN && cmd != Command.LIST && cmd != Command.FIND) {
                     storage.save(tasks.getAll());
                 }
 
@@ -141,80 +85,94 @@ public class Flores {
     @SuppressWarnings("checkstyle:Indentation")
     public String getResponse(String input) {
         try {
+            assert input != null : "Input cannot be null";
             Command cmd = Parser.getCommand(input);
-            String response = "";
+            String response = executeCommand(cmd, input);
 
-            switch (cmd) {
-                case LIST:
-                    assert tasks != null : "TaskList should be initialized before listing";
-                    response = ui.getTaskList(tasks);
-                    break;
-
-                case TODO:
-                    String todoDesc = Parser.getTodoDescription(input);
-                    Task t = new Todo(todoDesc);
-                    tasks.add(t);
-                    response = ui.getAddedMessage(t, tasks.size());
-                    break;
-
-                case DEADLINE:
-                    String[] deadlineData = Parser.getDeadlineData(input);
-                    Task d = new Deadline(deadlineData[0], deadlineData[1]);
-                    tasks.add(d);
-                    response = ui.getAddedMessage(d, tasks.size());
-                    break;
-
-                case EVENT:
-                    String[] eventData = Parser.getEventData(input);
-                    Task e = new Event(eventData[0], eventData[1], eventData[2]);
-                    tasks.add(e);
-                    response = ui.getAddedMessage(e, tasks.size());
-                    break;
-
-                case MARK:
-                    int markIdx = Parser.getIndex(input, "mark");
-                    tasks.get(markIdx).markAsDone();
-                    response = "Nice! I've marked this task as done:\n " + tasks.get(markIdx);
-                    break;
-
-                case UNMARK:
-                    int unmarkIdx = Parser.getIndex(input, "unmark");
-                    tasks.get(unmarkIdx).markAsNotDone();
-                    response = "OK, I've marked this task as not done yet:\n " + tasks.get(unmarkIdx);
-                    break;
-
-                case DELETE:
-                    int delIdx = Parser.getIndex(input, "delete");
-                    if (delIdx < 0 || delIdx >= tasks.size()) {
-                        throw new FloresException("That task number does not exist.");
-                    }
-                    Task removed = tasks.delete(delIdx);
-                    response = ui.getRemovedMessage(removed, tasks.size());
-                    break;
-
-                case FIND:
-                    String keyword = Parser.getFindKeyword(input);
-                    TaskList foundTasks = tasks.find(keyword);
-                    response = ui.getTaskList(foundTasks);
-                    break;
-
-                case BYE:
-                    response = "Bye. Hope to see you again soon!";
-                    break;
-
-                default:
-                    throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
-            }
-
-            if (cmd != Command.BYE && cmd != Command.UNKNOWN) {
+            if (cmd != Command.BYE && cmd != Command.UNKNOWN && cmd != Command.LIST && cmd != Command.FIND) {
                 storage.save(tasks.getAll());
             }
             return response;
+        } catch (
 
-        } catch (FloresException e) {
+        FloresException e) {
             return ui.getError(e.getMessage());
         } catch (Exception e) {
             return ui.getError("Something went wrong: " + e.getMessage());
         }
+    }
+
+    private String executeCommand(Command cmd, String input) throws FloresException {
+        switch (cmd) {
+            case LIST:
+                assert tasks != null : "TaskList should be initialized before listing";
+                return ui.getTaskList(tasks);
+            case TODO:
+                return executeTodo(input);
+            case DEADLINE:
+                return executeDeadline(input);
+            case EVENT:
+                return executeEvent(input);
+            case MARK:
+                return executeMark(input);
+            case UNMARK:
+                return executeUnmark(input);
+            case DELETE:
+                return executeDelete(input);
+            case FIND:
+                return executeFind(input);
+            case BYE:
+                return "Bye. Hope to see you again soon!";
+            default:
+                throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
+        }
+    }
+
+    private String executeTodo(String input) throws FloresException {
+        String todoDesc = Parser.getTodoDescription(input);
+        Task t = new Todo(todoDesc);
+        tasks.add(t);
+        return ui.getAddedMessage(t, tasks.size());
+    }
+
+    private String executeDeadline(String input) throws FloresException {
+        String[] deadlineData = Parser.getDeadlineData(input);
+        Task d = new Deadline(deadlineData[0], deadlineData[1]);
+        tasks.add(d);
+        return ui.getAddedMessage(d, tasks.size());
+    }
+
+    private String executeEvent(String input) throws FloresException {
+        String[] eventData = Parser.getEventData(input);
+        Task e = new Event(eventData[0], eventData[1], eventData[2]);
+        tasks.add(e);
+        return ui.getAddedMessage(e, tasks.size());
+    }
+
+    private String executeMark(String input) {
+        int markIdx = Parser.getIndex(input, "mark");
+        tasks.get(markIdx).markAsDone();
+        return "Nice! I've marked this task as done:\n " + tasks.get(markIdx);
+    }
+
+    private String executeUnmark(String input) {
+        int unmarkIdx = Parser.getIndex(input, "unmark");
+        tasks.get(unmarkIdx).markAsNotDone();
+        return "OK, I've marked this task as not done yet:\n " + tasks.get(unmarkIdx);
+    }
+
+    private String executeDelete(String input) throws FloresException {
+        int delIdx = Parser.getIndex(input, "delete");
+        if (delIdx < 0 || delIdx >= tasks.size()) {
+            throw new FloresException("That task number does not exist.");
+        }
+        Task removed = tasks.delete(delIdx);
+        return ui.getRemovedMessage(removed, tasks.size());
+    }
+
+    private String executeFind(String input) throws FloresException {
+        String keyword = Parser.getFindKeyword(input);
+        TaskList foundTasks = tasks.find(keyword);
+        return ui.getTaskList(foundTasks);
     }
 }
