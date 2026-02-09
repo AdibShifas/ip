@@ -73,6 +73,10 @@ public class Main extends Application {
 
         stage.setScene(scene);
         stage.show();
+
+        // Show welcome message on startup
+        dialogContainer.getChildren().add(
+                DialogBox.getFloresDialog(flores.getWelcome(), floresImage));
     }
 
     private void handleUserInput() {

@@ -102,6 +102,15 @@ public class Flores {
         }
     }
 
+    /**
+     * Retrieves the welcome message mostly for the GUI.
+     *
+     * @return The welcome message string.
+     */
+    public String getWelcome() {
+        return ui.getWelcome();
+    }
+
     private String executeCommand(Command cmd, String input) throws FloresException {
         switch (cmd) {
             case LIST:

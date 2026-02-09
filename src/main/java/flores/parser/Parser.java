@@ -60,14 +60,49 @@ public class Parser {
      */
     public static String[] getDeadlineData(String input) throws FloresException {
         assert input.toLowerCase().contains(DEADLINE_CMD) : "Input must contain '" + DEADLINE_CMD + "'";
-        assert input.contains(BY_KEYWORD) : "Input must contain '" + BY_KEYWORD + "'";
+
+        String content = input.substring(DEADLINE_CMD.length()).trim();
+        if (content.isEmpty() || content.startsWith("/by")) {
+            throw new FloresException("The description of a deadline cannot be empty.");
+        }
+        if (!content.contains(BY_KEYWORD.trim())) { // Use trim because we trimmed content
+            // Checking strictly for " /by " might fail if content is "desc /by time"
+            // (matches)
+            // But if we trimmed content, "desc /by time" -> "/by" is surrounded by spaces?
+            // The constant BY_KEYWORD is " /by ".
+            // If content is "desc /by time", it contains " /by ".
+            // If content is "desc/by time", it does not.
+        }
+
+        // Re-using original input for split to preserve spacing logic or using content?
+        // Original logic: input.substring(DEADLINE_CMD.length() + 1).split(BY_KEYWORD);
+        // Let's stick closer to working logic but add the specific check for empty
+        // desc.
+
         if (input.trim().equalsIgnoreCase(DEADLINE_CMD)) {
             throw new FloresException("The description of a deadline cannot be empty.");
         }
-        if (!input.contains(BY_KEYWORD)) {
+
+        // Check for empty description case like "deadline /by time"
+        // In this case input="deadline /by time". input.contains(" /by ") is TRUE.
+        // But description is empty.
+
+        int byIndex = input.indexOf(BY_KEYWORD);
+        if (byIndex == -1) {
             throw new FloresException("A deadline must have a /by time.");
         }
-        return input.substring(DEADLINE_CMD.length() + 1).split(BY_KEYWORD);
+
+        String description = input.substring(DEADLINE_CMD.length(), byIndex).trim();
+        if (description.isEmpty()) {
+            throw new FloresException("The description of a deadline cannot be empty.");
+        }
+
+        String byTime = input.substring(byIndex + BY_KEYWORD.length()).trim();
+        if (byTime.isEmpty()) {
+            throw new FloresException("A deadline must have a /by time.");
+        }
+
+        return new String[] { description, byTime };
     }
 
     /**
@@ -81,23 +116,26 @@ public class Parser {
      */
     public static String[] getEventData(String input) throws FloresException {
         assert input.toLowerCase().contains(EVENT_CMD) : "Input must contain '" + EVENT_CMD + "'";
-        assert input.contains(FROM_KEYWORD) : "Input must contain '" + FROM_KEYWORD + "'";
-        assert input.contains(TO_KEYWORD) : "Input must contain '" + TO_KEYWORD + "'";
-        if (input.trim().equalsIgnoreCase(EVENT_CMD)) {
-            throw new FloresException("The description of an event cannot be empty.");
-        }
-        if (!input.contains(FROM_KEYWORD) || !input.contains(TO_KEYWORD)) {
+
+        int fromIndex = input.indexOf(FROM_KEYWORD);
+        int toIndex = input.indexOf(TO_KEYWORD);
+
+        if (fromIndex == -1 || toIndex == -1) {
             throw new FloresException("An event must have /from and /to times.");
         }
+        if (fromIndex >= toIndex) {
+            throw new FloresException("/from must come before /to"); // Optional robustness
+        }
 
-        // Input: event project meeting /from 2026-01-28 /to 2026-01-29
-        String content = input.substring(EVENT_CMD.length() + 1); // remove "event "
-        String[] eventParts = content.split(FROM_KEYWORD);
-        String description = eventParts[0];
-        String[] timeParts = eventParts[1].split(TO_KEYWORD);
+        String description = input.substring(EVENT_CMD.length(), fromIndex).trim();
+        if (description.isEmpty()) {
+            throw new FloresException("The description of an event cannot be empty.");
+        }
 
-        // Returns {description, from, to}
-        return new String[] { description, timeParts[0], timeParts[1] };
+        String fromTime = input.substring(fromIndex + FROM_KEYWORD.length(), toIndex).trim();
+        String toTime = input.substring(toIndex + TO_KEYWORD.length()).trim();
+
+        return new String[] { description, fromTime, toTime };
     }
 
     /**
