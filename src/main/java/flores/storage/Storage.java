@@ -36,6 +36,7 @@ public class Storage {
      * @param items The list of tasks to be written to the file.
      */
     public void save(ArrayList<Task> items) {
+        assert items != null : "Items to save cannot be null";
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
@@ -60,6 +61,7 @@ public class Storage {
      * @return An ArrayList containing the tasks loaded from the file.
      */
     public ArrayList<Task> load() {
+        assert filePath != null && !filePath.isEmpty() : "File path cannot be null or empty";
         ArrayList<Task> items = new ArrayList<>();
         File file = new File(filePath);
         if (!file.exists())
