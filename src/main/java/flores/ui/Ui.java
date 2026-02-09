@@ -126,11 +126,9 @@ public class Ui {
     }
 
     public String getTaskList(TaskList tasks) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            sb.append((i + 1) + ". " + tasks.get(i) + "\n");
-        }
-        return sb.toString();
+        return "Here are the tasks in your list:\n" +
+                java.util.stream.IntStream.range(0, tasks.size())
+                        .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
+                        .collect(java.util.stream.Collectors.joining("\n"));
     }
 }

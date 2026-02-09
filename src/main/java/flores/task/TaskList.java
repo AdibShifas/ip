@@ -44,12 +44,9 @@ public class TaskList {
      */
     public TaskList find(String keyword) {
         assert keyword != null : "Keyword cannot be null";
-        ArrayList<Task> filtered = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                filtered.add(t);
-            }
-        }
+        ArrayList<Task> filtered = tasks.stream()
+                .filter(t -> t.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
         return new TaskList(filtered);
     }
 }

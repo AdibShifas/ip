@@ -41,8 +41,11 @@ public class Storage {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
             FileWriter fw = new FileWriter(file);
-            for (Task t : items) {
-                fw.write(t.toFileString() + System.lineSeparator());
+            if (!items.isEmpty()) {
+                String data = items.stream()
+                        .map(Task::toFileString)
+                        .collect(java.util.stream.Collectors.joining(System.lineSeparator()));
+                fw.write(data + System.lineSeparator());
             }
             fw.close();
         } catch (IOException e) {
