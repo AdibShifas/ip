@@ -1,16 +1,16 @@
 package flores.storage;
 
-import flores.task.Deadline;
-import flores.task.Event;
-import flores.task.Task;
-import flores.task.Todo;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import flores.task.Deadline;
+import flores.task.Event;
+import flores.task.Task;
+import flores.task.Todo;
 
 /**
  * Handles the loading and saving of task data to a local file.
@@ -39,7 +39,10 @@ public class Storage {
         assert items != null : "Items to save cannot be null";
         try {
             File file = new File(filePath);
-            file.getParentFile().mkdirs();
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+
             FileWriter fw = new FileWriter(file);
             if (!items.isEmpty()) {
                 String data = items.stream()
@@ -64,19 +67,22 @@ public class Storage {
         assert filePath != null && !filePath.isEmpty() : "File path cannot be null or empty";
         ArrayList<Task> items = new ArrayList<>();
         File file = new File(filePath);
-        if (!file.exists())
+        if (!file.exists()) {
             return items;
+        }
 
         try (Scanner s = new Scanner(file)) {
             while (s.hasNext()) {
                 String line = s.nextLine();
-                if (line.trim().isEmpty())
+                if (line.trim().isEmpty()) {
                     continue;
+                }
 
                 String[] parts = line.split(" \\| ");
 
-                if (parts.length < 3)
+                if (parts.length < 3) {
                     continue;
+                }
 
                 String type = parts[0];
                 boolean isDone = parts[1].equals("1");
@@ -93,8 +99,9 @@ public class Storage {
                     }
 
                     if (t != null) {
-                        if (isDone)
+                        if (isDone) {
                             t.markAsDone();
+                        }
                         items.add(t);
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {

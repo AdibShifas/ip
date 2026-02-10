@@ -1,5 +1,0 @@
-E | 1 | workshop | 2026-02-06 | 2026-02-07
-T | 1 | 2103t week 3
-D | 0 | IS2218 Assignment 2 | 2026-02-10
-T | 1 | upload screenshot
-D | 0 | tp teammates | 2026-02-12

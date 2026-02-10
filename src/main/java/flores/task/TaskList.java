@@ -2,6 +2,10 @@ package flores.task;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks.
+ * Contains operations to add, delete, get, and filter tasks.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
 
@@ -13,11 +17,22 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param t The task to add.
+     */
     public void add(Task t) {
         assert t != null : "Task to add cannot be null";
         tasks.add(t);
     }
 
+    /**
+     * Deletes a task from the list at the specified index.
+     *
+     * @param index The 0-based index of the task to delete.
+     * @return The deleted task.
+     */
     public Task delete(int index) {
         assert index >= 0 && index < tasks.size() : "Index out of bounds for delete";
         return tasks.remove(index);

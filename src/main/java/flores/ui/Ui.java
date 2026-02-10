@@ -1,6 +1,8 @@
 package flores.ui;
 
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import flores.task.Task;
 import flores.task.TaskList;
@@ -11,8 +13,8 @@ import flores.task.TaskList;
  * user input.
  */
 public class Ui {
+    private static final String LINE = "____________________________________________________________";
     private Scanner sc;
-    private final String LINE = "____________________________________________________________";
 
     /**
      * Initializes a new Ui object and sets up the scanner for user input.
@@ -95,9 +97,9 @@ public class Ui {
     }
 
     public String getAddedMessage(Task task, int size) {
-        return " Got it. I've added this task:\n" +
-                "   " + task + "\n" +
-                " Now you have " + size + " tasks in the list.";
+        return " Got it. I've added this task:\n"
+                + "   " + task + "\n"
+                + " Now you have " + size + " tasks in the list.";
     }
 
     /**
@@ -111,9 +113,9 @@ public class Ui {
     }
 
     public String getRemovedMessage(Task task, int size) {
-        return " Noted. I've removed this task:\n" +
-                "   " + task + "\n" +
-                " Now you have " + size + " tasks in the list.";
+        return " Noted. I've removed this task:\n"
+                + "   " + task + "\n"
+                + " Now you have " + size + " tasks in the list.";
     }
 
     /**
@@ -126,9 +128,9 @@ public class Ui {
     }
 
     public String getTaskList(TaskList tasks) {
-        return "Here are the tasks in your list:\n" +
-                java.util.stream.IntStream.range(0, tasks.size())
+        return "Here are the tasks in your list:\n"
+                + IntStream.range(0, tasks.size())
                         .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
-                        .collect(java.util.stream.Collectors.joining("\n"));
+                        .collect(Collectors.joining("\n"));
     }
 }
