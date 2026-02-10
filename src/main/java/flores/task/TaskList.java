@@ -64,4 +64,14 @@ public class TaskList {
                 .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
         return new TaskList(filtered);
     }
+
+    /**
+     * Checks if the list contains a task identical to the given task.
+     *
+     * @param t The task to check for duplicates.
+     * @return True if a duplicate exists, false otherwise.
+     */
+    public boolean hasDuplicate(Task t) {
+        return tasks.contains(t);
+    }
 }

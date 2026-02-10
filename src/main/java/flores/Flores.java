@@ -142,6 +142,9 @@ public class Flores {
     private String executeTodo(String input) throws FloresException {
         String todoDesc = Parser.getTodoDescription(input);
         Task t = new Todo(todoDesc);
+        if (tasks.hasDuplicate(t)) {
+            throw new FloresException("This task is already in your list.");
+        }
         tasks.add(t);
         return ui.getAddedMessage(t, tasks.size());
     }
@@ -149,6 +152,9 @@ public class Flores {
     private String executeDeadline(String input) throws FloresException {
         String[] deadlineData = Parser.getDeadlineData(input);
         Task d = new Deadline(deadlineData[0], deadlineData[1]);
+        if (tasks.hasDuplicate(d)) {
+            throw new FloresException("This task is already in your list.");
+        }
         tasks.add(d);
         return ui.getAddedMessage(d, tasks.size());
     }
@@ -156,6 +162,9 @@ public class Flores {
     private String executeEvent(String input) throws FloresException {
         String[] eventData = Parser.getEventData(input);
         Task e = new Event(eventData[0], eventData[1], eventData[2]);
+        if (tasks.hasDuplicate(e)) {
+            throw new FloresException("This task is already in your list.");
+        }
         tasks.add(e);
         return ui.getAddedMessage(e, tasks.size());
     }

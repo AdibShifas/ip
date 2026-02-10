@@ -34,4 +34,24 @@ public class Event extends Task {
     public String toFileString() {
         return "E | " + (getIsDone() ? "1" : "0") + " | " + getDescription() + " | " + from + " | " + to;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Event event = (Event) o;
+        return from.equals(event.from) && to.equals(event.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return helperHashCode(super.hashCode(), from, to);
+    }
 }
