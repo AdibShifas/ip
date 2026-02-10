@@ -1,0 +1,4 @@
+T | 0 | read book
+D | 0 | return book | 2026-02-15
+E | 0 | project meeting | 2026-02-16 | 2026-02-17
+T | 0 | meet friend
