@@ -2,5 +2,8 @@ todo read book
 deadline return book /by 2026-02-15
 event project meeting /from 2026-02-16 /to 2026-02-17
 todo meet friend
+todo read book
+deadline return book /by 2026-02-15
+event project meeting /from 2026-02-16 /to 2026-02-17
 list
 bye

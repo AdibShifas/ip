@@ -1,7 +1,9 @@
 package flores.task;
+
 /**
  * Represents a generic task in the Flores application.
- * A task consists of a description and a status indicating whether it is completed.
+ * A task consists of a description and a status indicating whether it is
+ * completed.
  */
 public class Task {
     private String description;
@@ -77,5 +79,26 @@ public class Task {
     public String toFileString() {
         String status = isDone ? "1" : "0";
         return status + " | " + getDescription();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return description.equals(task.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return helperHashCode(description);
+    }
+
+    protected int helperHashCode(Object... objects) {
+        return java.util.Objects.hash(objects);
     }
 }

@@ -6,6 +6,9 @@ then
     mkdir ../bin
 fi
 
+# change to script directory
+cd "$(dirname "$0")" || exit
+
 # delete output from previous run
 if [ -e "./ACTUAL.TXT" ]
 then

@@ -30,4 +30,24 @@ public class Deadline extends Task {
     public String toFileString() {
         return "D | " + (getIsDone() ? "1" : "0") + " | " + getDescription() + " | " + by;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Deadline deadline = (Deadline) o;
+        return by.equals(deadline.by);
+    }
+
+    @Override
+    public int hashCode() {
+        return helperHashCode(super.hashCode(), by);
+    }
 }

@@ -1,5 +1,8 @@
 @ECHO OFF
 
+REM change to script directory
+cd /d "%~dp0"
+
 REM create bin directory if it doesn't exist
 if not exist ..\bin mkdir ..\bin
 
