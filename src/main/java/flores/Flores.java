@@ -4,7 +4,11 @@ import flores.exception.FloresException;
 import flores.parser.Command;
 import flores.parser.Parser;
 import flores.storage.Storage;
-import flores.task.*;
+import flores.task.Deadline;
+import flores.task.Event;
+import flores.task.Task;
+import flores.task.TaskList;
+import flores.task.Todo;
 import flores.ui.Ui;
 
 /**
@@ -93,9 +97,7 @@ public class Flores {
                 storage.save(tasks.getAll());
             }
             return response;
-        } catch (
-
-        FloresException e) {
+        } catch (FloresException e) {
             return ui.getError(e.getMessage());
         } catch (Exception e) {
             return ui.getError("Something went wrong: " + e.getMessage());
@@ -113,27 +115,27 @@ public class Flores {
 
     private String executeCommand(Command cmd, String input) throws FloresException {
         switch (cmd) {
-            case LIST:
-                assert tasks != null : "TaskList should be initialized before listing";
-                return ui.getTaskList(tasks);
-            case TODO:
-                return executeTodo(input);
-            case DEADLINE:
-                return executeDeadline(input);
-            case EVENT:
-                return executeEvent(input);
-            case MARK:
-                return executeMark(input);
-            case UNMARK:
-                return executeUnmark(input);
-            case DELETE:
-                return executeDelete(input);
-            case FIND:
-                return executeFind(input);
-            case BYE:
-                return "Bye. Hope to see you again soon!";
-            default:
-                throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
+        case LIST:
+            assert tasks != null : "TaskList should be initialized before listing";
+            return ui.getTaskList(tasks);
+        case TODO:
+            return executeTodo(input);
+        case DEADLINE:
+            return executeDeadline(input);
+        case EVENT:
+            return executeEvent(input);
+        case MARK:
+            return executeMark(input);
+        case UNMARK:
+            return executeUnmark(input);
+        case DELETE:
+            return executeDelete(input);
+        case FIND:
+            return executeFind(input);
+        case BYE:
+            return "Bye. Hope to see you again soon!";
+        default:
+            throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
         }
     }
 
