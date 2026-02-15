@@ -1,5 +1,7 @@
 # Flores
 
+> **View the full User Guide [here](docs/README.md).**
+
 Flores is a nonchalant task management chatbot that helps you keep track of your todos, deadlines, and events. It doesn't care much, but it gets the job done.
 
 ## Features
