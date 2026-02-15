@@ -1,43 +1,39 @@
 ____________________________________________________________
-Hello! I'm Flores
-What can I do for you?
+Sup. I'm Flores.
+What do you want?
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Added. You have 1 tasks now.
    [T][ ] read book
- Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Added. You have 2 tasks now.
    [D][ ] return book (by: Feb 15 2026)
- Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Added. You have 3 tasks now.
    [E][ ] project meeting (from: Feb 16 2026 to: Feb 17 2026)
- Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ Added. You have 4 tasks now.
    [T][ ] meet friend
- Now you have 4 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
-HUH?? This task is already in your list.
+Bruh... You already have this. One is enough.
 ____________________________________________________________
 ____________________________________________________________
-HUH?? This task is already in your list.
+Bruh... You already have this. One is enough.
 ____________________________________________________________
 ____________________________________________________________
-HUH?? This task is already in your list.
+Bruh... You already have this. One is enough.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here. Try to finish these:
 1. [T][ ] read book
 2. [D][ ] return book (by: Feb 15 2026)
 3. [E][ ] project meeting (from: Feb 16 2026 to: Feb 17 2026)
 4. [T][ ] meet friend
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Bye. Whatever.
 ____________________________________________________________
