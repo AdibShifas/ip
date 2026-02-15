@@ -1,26 +1,51 @@
-# Duke project template
+# Flores
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+Flores is a nonchalant task management chatbot that helps you keep track of your todos, deadlines, and events. It doesn't care much, but it gets the job done.
 
-## Setting up in Intellij
+## Features
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+-   **Task Tracking**: Add `todo`, `deadline`, and `event` tasks.
+-   **Storage**: Automatically saves your tasks to `data/flores.txt`.
+-   **Nonchalant Personality**: Flores has an attitude. Don't take it personally.
+-   **Robust Error Handling**:
+    -   Strict date validation (`yyyy-mm-dd`).
+    -   Logical checks (e.g., event start date must be before end date).
+    -   Duplicate task detection.
+    -   Graceful handling of corrupted save files.
+-   **GUI**: A clean JavaFX interface with circular profile pictures and styled dialog boxes.
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+## Usage
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+### Adding Tasks
+
+-   **Todo**: `todo <description>`
+    -   Example: `todo read book`
+-   **Deadline**: `deadline <description> /by <date>`
+    -   Example: `deadline return book /by 2026-02-15`
+-   **Event**: `event <description> /from <start> /to <end>`
+    -   Example: `event project meeting /from 2026-02-16 /to 2026-02-17`
+
+### Managing Tasks
+
+-   **List**: `list` - Shows all tasks.
+-   **Mark**: `mark <index>` - Marks a task as done.
+-   **Unmark**: `unmark <index>` - Marks a task as not done.
+-   **Delete**: `delete <index>` - Removes a task.
+-   **Find**: `find <keyword>` - Searches for tasks.
+
+### Exiting
+
+-   **Bye**: `bye` - Closes the application (after a short delay).
+
+## Setup
+
+1.  Ensure you have **Java 17** or later installed.
+2.  Clone the repository.
+3.  Run the application using Gradle:
+    ```bash
+    ./gradlew run
+    ```
+4.  Run tests:
+    ```bash
+    ./gradlew test
+    ```
