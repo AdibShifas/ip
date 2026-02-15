@@ -1,0 +1,79 @@
+/* Main window background */
+.root {
+    -fx-background-color: #2b2b2b; /* Dark background */
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* ScrollPane background (matches root) */
+.scroll-pane {
+    -fx-background: #2b2b2b;
+    -fx-border-color: #2b2b2b;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Dialog container padding */
+.dialog-container {
+    -fx-background-color: #2b2b2b;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}
+
+/* User dialog box styling */
+.dialog-box-user {
+    -fx-background-color: #005c4b; /* WhatsApp-like green for user */
+    -fx-background-radius: 15px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 2);
+    -fx-text-fill: white;
+}
+
+/* Flores (bot) dialog box styling */
+.dialog-box-flores {
+    -fx-background-color: #3c3c3c; /* Dark grey for bot */
+    -fx-background-radius: 15px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 2);
+    -fx-text-fill: white;
+}
+
+/* Text label styling within dialogs */
+.label {
+    -fx-text-fill: white;
+    -fx-padding: 5px;
+}
+
+/* Input field styling */
+.text-field {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-border-color: #555555;
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+}
+
+.text-field:focused {
+    -fx-border-color: #00a884; /* Highlight color */
+}
+
+/* Send button styling */
+.button {
+    -fx-background-color: #00a884;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #008f6f;
+}
+
+.button:pressed {
+    -fx-background-color: #007a5f;
+}

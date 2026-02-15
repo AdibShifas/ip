@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  * A custom control using FXML.
@@ -34,10 +35,15 @@ public class DialogBox extends HBox {
 
         // Styling the text and image
         text.setWrapText(true);
-        displayPicture.setFitWidth(100.0);
-        displayPicture.setFitHeight(100.0);
+        displayPicture.setFitWidth(50.0); // Smaller, more reasonable size
+        displayPicture.setFitHeight(50.0);
 
-        this.setAlignment(Pos.TOP_RIGHT); // Default alignment for user (Right side)
+        // Circle clip for image
+        Circle clip = new Circle(25, 25, 25);
+        displayPicture.setClip(clip);
+
+        this.setAlignment(Pos.TOP_RIGHT);
+        this.setSpacing(10);
         this.getChildren().addAll(text, displayPicture);
     }
 
@@ -53,12 +59,15 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        db.getStyleClass().add("dialog-box-user");
+        return db;
     }
 
     public static DialogBox getFloresDialog(String text, Image img) {
         var db = new DialogBox(text, img);
-        db.flip(); // Flip it so the bot's image is on the left
+        db.flip();
+        db.getStyleClass().add("dialog-box-flores");
         return db;
     }
 }
