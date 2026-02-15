@@ -61,6 +61,7 @@ public class Parser {
     public static String[] getDeadlineData(String input) throws FloresException {
         assert input.toLowerCase().contains(DEADLINE_CMD) : "Input must contain '" + DEADLINE_CMD + "'";
 
+        // Gemini: Added check for duplicate /by flags to prevent ambiguous input.
         if (input.indexOf(BY_KEYWORD) != input.lastIndexOf(BY_KEYWORD)) {
             throw new FloresException("You can't have multiple /by times. One is enough.");
         }
@@ -88,6 +89,7 @@ public class Parser {
         try {
             java.time.LocalDate.parse(byTime);
         } catch (java.time.format.DateTimeParseException e) {
+            // Gemini: Added strict date format validation (yyyy-mm-dd).
             throw new FloresException("Dates must be yyyy-mm-dd. Basic stuff.");
         }
 

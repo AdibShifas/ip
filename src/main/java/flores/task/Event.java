@@ -24,6 +24,7 @@ public class Event extends Task {
         this.to = LocalDate.parse(to.trim());
 
         if (this.from.isAfter(this.to)) {
+            // Gemini: Added logic check to ensure start date is before end date.
             throw new flores.exception.FloresException("End date can't be before start date. Time travel isn't real.");
         }
     }

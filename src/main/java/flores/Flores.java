@@ -122,10 +122,11 @@ public class Flores {
      * @throws FloresException If an error occurs during execution.
      */
     private String executeCommand(Command cmd, String input) throws FloresException {
-        // Gemini: Structured command delegation for improved readability.
+        // Gemini: Structured command delegation for improved readability and
+        // maintenance.
         switch (cmd) {
         case LIST:
-                assert tasks != null : "TaskList should be initialized before listing";
+            assert tasks != null : "TaskList should be initialized before listing";
             return ui.getTaskList(tasks);
         case TODO:
             return executeTodo(input);

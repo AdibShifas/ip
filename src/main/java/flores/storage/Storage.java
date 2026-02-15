@@ -105,6 +105,8 @@ public class Storage {
                         items.add(t);
                     }
                 } catch (Exception e) {
+                    // Gemini: Gracefully handle corrupted lines by skipping them instead of
+                    // crashing.
                     System.out.println("Skipping corrupted line: " + line + " (" + e.getMessage() + ")");
                 }
             }

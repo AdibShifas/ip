@@ -60,6 +60,8 @@ public class Ui {
         System.out.println(getError(message));
     }
 
+    // Gemini: Updated error message format to be "nonchalant" with "Bruh..."
+    // prefix.
     public String getError(String... message) {
         StringBuilder sb = new StringBuilder();
         for (String m : message) {
