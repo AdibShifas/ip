@@ -42,15 +42,36 @@ public class ParserTest {
     // Gemini: Generated test case to verify composite data parsing.
     @Test
     public void getEventData_validInput_success() throws FloresException {
-        String input = "event concert /from 18:00 /to 22:00";
-        String[] expected = { "concert", "18:00", "22:00" };
+        String input = "event concert /from 2026-02-16 /to 2026-02-17";
+        String[] expected = { "concert", "2026-02-16", "2026-02-17" };
         assertArrayEquals(expected, Parser.getEventData(input));
     }
 
     // Gemini: Added prompt error detection test.
     @Test
     public void getEventData_missingParts_exceptionThrown() {
-        String input = "event concert /from 18:00";
+        String input = "event concert /from 2026-02-16";
+        assertThrows(FloresException.class, () -> Parser.getEventData(input));
+    }
+
+    // Gemini: Test for duplicate flags
+    @Test
+    public void getDeadlineData_duplicateFlags_exceptionThrown() {
+        String input = "deadline return book /by 2026-02-15 /by 2026-02-16";
+        assertThrows(FloresException.class, () -> Parser.getDeadlineData(input));
+    }
+
+    // Gemini: Test for invalid date format
+    @Test
+    public void getDeadlineData_invalidDate_exceptionThrown() {
+        String input = "deadline return book /by 2026-02-30"; // Invalid date (Feb 30)
+        assertThrows(FloresException.class, () -> Parser.getDeadlineData(input));
+    }
+
+    // Gemini: Test for invalid format string
+    @Test
+    public void getEventData_invalidFormat_exceptionThrown() {
+        String input = "event concert /from 6pm /to 8pm";
         assertThrows(FloresException.class, () -> Parser.getEventData(input));
     }
 

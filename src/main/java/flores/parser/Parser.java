@@ -61,31 +61,14 @@ public class Parser {
     public static String[] getDeadlineData(String input) throws FloresException {
         assert input.toLowerCase().contains(DEADLINE_CMD) : "Input must contain '" + DEADLINE_CMD + "'";
 
+        if (input.indexOf(BY_KEYWORD) != input.lastIndexOf(BY_KEYWORD)) {
+            throw new FloresException("You can't have multiple /by times. One is enough.");
+        }
+
         String content = input.substring(DEADLINE_CMD.length()).trim();
         if (content.isEmpty() || content.startsWith("/by")) {
             throw new FloresException("Empty description? Just type something.");
         }
-        if (!content.contains(BY_KEYWORD.trim())) { // Use trim because we trimmed content
-            // Checking strictly for " /by " might fail if content is "desc /by time"
-            // (matches)
-            // But if we trimmed content, "desc /by time" -> "/by" is surrounded by spaces?
-            // The constant BY_KEYWORD is " /by ".
-            // If content is "desc /by time", it contains " /by ".
-            // If content is "desc/by time", it does not.
-        }
-
-        // Re-using original input for split to preserve spacing logic or using content?
-        // Original logic: input.substring(DEADLINE_CMD.length() + 1).split(BY_KEYWORD);
-        // Let's stick closer to working logic but add the specific check for empty
-        // desc.
-
-        if (input.trim().equalsIgnoreCase(DEADLINE_CMD)) {
-            throw new FloresException("Empty description? Just type something.");
-        }
-
-        // Check for empty description case like "deadline /by time"
-        // In this case input="deadline /by time". input.contains(" /by ") is TRUE.
-        // But description is empty.
 
         int byIndex = input.indexOf(BY_KEYWORD);
         if (byIndex == -1) {
@@ -100,6 +83,12 @@ public class Parser {
         String byTime = input.substring(byIndex + BY_KEYWORD.length()).trim();
         if (byTime.isEmpty()) {
             throw new FloresException("Missing /by time. Fix it.");
+        }
+
+        try {
+            java.time.LocalDate.parse(byTime);
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new FloresException("Dates must be yyyy-mm-dd. Basic stuff.");
         }
 
         return new String[] { description, byTime };
@@ -117,14 +106,28 @@ public class Parser {
     public static String[] getEventData(String input) throws FloresException {
         assert input.toLowerCase().contains(EVENT_CMD) : "Input must contain '" + EVENT_CMD + "'";
 
+        if (input.indexOf(FROM_KEYWORD) != input.lastIndexOf(FROM_KEYWORD)
+                || input.indexOf(TO_KEYWORD) != input.lastIndexOf(TO_KEYWORD)) {
+            throw new FloresException("Multiple /from or /to? That's confusing. Stop it.");
+        }
+
         int fromIndex = input.indexOf(FROM_KEYWORD);
         int toIndex = input.indexOf(TO_KEYWORD);
 
         if (fromIndex == -1 || toIndex == -1) {
             throw new FloresException("Event needs start and end times. Basic stuff.");
         }
+
+        // Allow flexible ordering of /from and /to?
+        // Current logic assumes /from comes first usually or we just use indices.
+        // But let's check basic sanity valid ranges.
+        // Actually, if fromIndex > toIndex, the substring extraction below might fail
+        // or be weird depending on logic.
+        // If fromIndex > toIndex, distinct from 'from' logic.
+        // Let's enforce /from before /to for simplicity as established in original
+        // code.
         if (fromIndex >= toIndex) {
-            throw new FloresException("/from must come before /to"); // Optional robustness
+            throw new FloresException("/from must come before /to. Logic, please.");
         }
 
         String description = input.substring(EVENT_CMD.length(), fromIndex).trim();
@@ -134,6 +137,13 @@ public class Parser {
 
         String fromTime = input.substring(fromIndex + FROM_KEYWORD.length(), toIndex).trim();
         String toTime = input.substring(toIndex + TO_KEYWORD.length()).trim();
+
+        try {
+            java.time.LocalDate.parse(fromTime);
+            java.time.LocalDate.parse(toTime);
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new FloresException("Dates must be yyyy-mm-dd. Basic stuff.");
+        }
 
         return new String[] { description, fromTime, toTime };
     }

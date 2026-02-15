@@ -104,11 +104,13 @@ public class Storage {
                         }
                         items.add(t);
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Skipping corrupted line: " + line);
+                } catch (Exception e) {
+                    System.out.println("Skipping corrupted line: " + line + " (" + e.getMessage() + ")");
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (
+
+        FileNotFoundException e) {
             System.out.println("No save file found.");
         }
         return items;

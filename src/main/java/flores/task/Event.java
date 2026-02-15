@@ -16,11 +16,16 @@ public class Event extends Task {
      * @param description The details of the event.
      * @param from        The start date in yyyy-mm-dd format.
      * @param to          The end date in yyyy-mm-dd format.
+     * @throws FloresException If the start date is after the end date.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String to) throws flores.exception.FloresException {
         super(description);
         this.from = LocalDate.parse(from.trim());
         this.to = LocalDate.parse(to.trim());
+
+        if (this.from.isAfter(this.to)) {
+            throw new flores.exception.FloresException("End date can't be before start date. Time travel isn't real.");
+        }
     }
 
     @Override
