@@ -1,15 +1,17 @@
 package flores;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * A GUI for Flores using FXML.
@@ -25,8 +27,9 @@ public class Main extends Application {
     private Flores flores = new Flores("./data/flores.txt");
 
     // Load images from the resources folder
-    private Image user = new Image(this.getClass().getResourceAsStream("/images/Adib.png"));
-    private Image floresImage = new Image(this.getClass().getResourceAsStream("/images/Travis.png"));
+    // Load images from the resources folder
+    private Image user = new Image(this.getClass().getResourceAsStream("/images/user.png"));
+    private Image floresImage = new Image(this.getClass().getResourceAsStream("/images/bot.png"));
 
     @Override
     public void start(Stage stage) {
@@ -41,6 +44,7 @@ public class Main extends Application {
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
 
         scene = new Scene(mainLayout);
+        scene.getStylesheets().add(this.getClass().getResource("/view/style.css").toExternalForm());
 
         stage.setTitle("Flores");
         stage.setResizable(false);
@@ -55,7 +59,9 @@ public class Main extends Application {
         scrollPane.setVvalue(1.0);
         scrollPane.setFitToWidth(true);
 
-        dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        dialogContainer.getStyleClass().add("dialog-container");
+        userInput.getStyleClass().add("text-field");
+        sendButton.getStyleClass().add("button");
 
         userInput.setPrefWidth(325.0);
         sendButton.setPrefWidth(55.0);
@@ -86,6 +92,16 @@ public class Main extends Application {
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userText, user),
                 DialogBox.getFloresDialog(floresText, floresImage));
+
+        // Gemini: Check for exit command and close after a short delay
+        if (userText.trim().equalsIgnoreCase("bye")) {
+            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+            delay.setOnFinished(event -> {
+                Platform.exit();
+                System.exit(0);
+            });
+            delay.play();
+        }
 
         userInput.clear();
     }
