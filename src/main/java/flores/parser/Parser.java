@@ -44,7 +44,7 @@ public class Parser {
     public static String getTodoDescription(String input) throws FloresException {
         assert input.toLowerCase().startsWith(TODO_CMD) : "Input must start with '" + TODO_CMD + "'";
         if (input.trim().equalsIgnoreCase(TODO_CMD)) {
-            throw new FloresException("The description of a todo cannot be empty.");
+            throw new FloresException("Empty description? Just type something.");
         }
         return input.substring(TODO_CMD.length() + 1).trim();
     }
@@ -63,7 +63,7 @@ public class Parser {
 
         String content = input.substring(DEADLINE_CMD.length()).trim();
         if (content.isEmpty() || content.startsWith("/by")) {
-            throw new FloresException("The description of a deadline cannot be empty.");
+            throw new FloresException("Empty description? Just type something.");
         }
         if (!content.contains(BY_KEYWORD.trim())) { // Use trim because we trimmed content
             // Checking strictly for " /by " might fail if content is "desc /by time"
@@ -80,7 +80,7 @@ public class Parser {
         // desc.
 
         if (input.trim().equalsIgnoreCase(DEADLINE_CMD)) {
-            throw new FloresException("The description of a deadline cannot be empty.");
+            throw new FloresException("Empty description? Just type something.");
         }
 
         // Check for empty description case like "deadline /by time"
@@ -89,17 +89,17 @@ public class Parser {
 
         int byIndex = input.indexOf(BY_KEYWORD);
         if (byIndex == -1) {
-            throw new FloresException("A deadline must have a /by time.");
+            throw new FloresException("Missing /by time. Fix it.");
         }
 
         String description = input.substring(DEADLINE_CMD.length(), byIndex).trim();
         if (description.isEmpty()) {
-            throw new FloresException("The description of a deadline cannot be empty.");
+            throw new FloresException("Empty description? Just type something.");
         }
 
         String byTime = input.substring(byIndex + BY_KEYWORD.length()).trim();
         if (byTime.isEmpty()) {
-            throw new FloresException("A deadline must have a /by time.");
+            throw new FloresException("Missing /by time. Fix it.");
         }
 
         return new String[] { description, byTime };
@@ -121,7 +121,7 @@ public class Parser {
         int toIndex = input.indexOf(TO_KEYWORD);
 
         if (fromIndex == -1 || toIndex == -1) {
-            throw new FloresException("An event must have /from and /to times.");
+            throw new FloresException("Event needs start and end times. Basic stuff.");
         }
         if (fromIndex >= toIndex) {
             throw new FloresException("/from must come before /to"); // Optional robustness
@@ -129,7 +129,7 @@ public class Parser {
 
         String description = input.substring(EVENT_CMD.length(), fromIndex).trim();
         if (description.isEmpty()) {
-            throw new FloresException("The description of an event cannot be empty.");
+            throw new FloresException("Empty description? Just type something.");
         }
 
         String fromTime = input.substring(fromIndex + FROM_KEYWORD.length(), toIndex).trim();
@@ -165,7 +165,7 @@ public class Parser {
      */
     public static String getFindKeyword(String input) throws FloresException {
         if (input.trim().equalsIgnoreCase(FIND_CMD)) {
-            throw new FloresException("What am I supposed to find? Give me a keyword!");
+            throw new FloresException("Find what? Give me a keyword.");
         }
         return input.substring(5).trim();
     }

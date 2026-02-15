@@ -31,7 +31,7 @@ public class Ui {
     }
 
     public String getWelcome() {
-        return LINE + "\nHello! I'm Flores\nWhat can I do for you?\n" + LINE;
+        return LINE + "\nSup. I'm Flores.\nWhat do you want?\n" + LINE;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Ui {
     public String getError(String... message) {
         StringBuilder sb = new StringBuilder();
         for (String m : message) {
-            sb.append(" HUH?? ").append(m).append("\n");
+            sb.append(" Bruh... ").append(m).append("\n");
         }
         return sb.toString().trim();
     }
@@ -72,7 +72,7 @@ public class Ui {
      * Displays a message indicating that the save file could not be loaded.
      */
     public void showLoadingError() {
-        System.out.println(" OOPS!!! I couldn't load your tasks. Starting with a fresh list!");
+        System.out.println(" Couldn't load your tasks. Starting fresh I guess.");
     }
 
     /**
@@ -97,9 +97,8 @@ public class Ui {
     }
 
     public String getAddedMessage(Task task, int size) {
-        return " Got it. I've added this task:\n"
-                + "   " + task + "\n"
-                + " Now you have " + size + " tasks in the list.";
+        return " Added. You have " + size + " tasks now.\n"
+                + "   " + task;
     }
 
     /**
@@ -113,9 +112,8 @@ public class Ui {
     }
 
     public String getRemovedMessage(Task task, int size) {
-        return " Noted. I've removed this task:\n"
-                + "   " + task + "\n"
-                + " Now you have " + size + " tasks in the list.";
+        return " Deleted. You have " + size + " tasks left.\n"
+                + "   " + task;
     }
 
     /**
@@ -128,7 +126,7 @@ public class Ui {
     }
 
     public String getTaskList(TaskList tasks) {
-        return "Here are the tasks in your list:\n"
+        return "Here. Try to finish these:\n"
                 + IntStream.range(0, tasks.size())
                         .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
                         .collect(Collectors.joining("\n"));

@@ -125,7 +125,7 @@ public class Flores {
         // Gemini: Structured command delegation for improved readability.
         switch (cmd) {
         case LIST:
-            assert tasks != null : "TaskList should be initialized before listing";
+                assert tasks != null : "TaskList should be initialized before listing";
             return ui.getTaskList(tasks);
         case TODO:
             return executeTodo(input);
@@ -142,9 +142,9 @@ public class Flores {
         case FIND:
             return executeFind(input);
         case BYE:
-            return "Bye. Hope to see you again soon!";
+            return "Bye. Whatever.";
         default:
-            throw new FloresException("I DONT KNOW WHAT THAT MEANS BRUH");
+            throw new FloresException("I don't get it. Keep it simple.");
         }
     }
 
@@ -162,7 +162,7 @@ public class Flores {
         String todoDesc = Parser.getTodoDescription(input);
         Task t = new Todo(todoDesc);
         if (tasks.hasDuplicate(t)) {
-            throw new FloresException("This task is already in your list.");
+            throw new FloresException("You already have this. One is enough.");
         }
         tasks.add(t);
         return ui.getAddedMessage(t, tasks.size());
@@ -182,7 +182,7 @@ public class Flores {
         String[] deadlineData = Parser.getDeadlineData(input);
         Task d = new Deadline(deadlineData[0], deadlineData[1]);
         if (tasks.hasDuplicate(d)) {
-            throw new FloresException("This task is already in your list.");
+            throw new FloresException("You already have this. One is enough.");
         }
         tasks.add(d);
         return ui.getAddedMessage(d, tasks.size());
@@ -201,7 +201,7 @@ public class Flores {
         String[] eventData = Parser.getEventData(input);
         Task e = new Event(eventData[0], eventData[1], eventData[2]);
         if (tasks.hasDuplicate(e)) {
-            throw new FloresException("This task is already in your list.");
+            throw new FloresException("You already have this. One is enough.");
         }
         tasks.add(e);
         return ui.getAddedMessage(e, tasks.size());
@@ -217,7 +217,7 @@ public class Flores {
     private String executeMark(String input) {
         int markIdx = Parser.getIndex(input, "mark");
         tasks.get(markIdx).markAsDone();
-        return "Nice! I've marked this task as done:\n " + tasks.get(markIdx);
+        return "Done. Finally.\n " + tasks.get(markIdx);
     }
 
     /**
@@ -230,7 +230,7 @@ public class Flores {
     private String executeUnmark(String input) {
         int unmarkIdx = Parser.getIndex(input, "unmark");
         tasks.get(unmarkIdx).markAsNotDone();
-        return "OK, I've marked this task as not done yet:\n " + tasks.get(unmarkIdx);
+        return "Not done? Make up your mind.\n " + tasks.get(unmarkIdx);
     }
 
     /**
@@ -245,7 +245,7 @@ public class Flores {
     private String executeDelete(String input) throws FloresException {
         int delIdx = Parser.getIndex(input, "delete");
         if (delIdx < 0 || delIdx >= tasks.size()) {
-            throw new FloresException("That task number does not exist.");
+            throw new FloresException("Invalid number. Can't you count?");
         }
         Task removed = tasks.delete(delIdx);
         return ui.getRemovedMessage(removed, tasks.size());
