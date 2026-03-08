@@ -114,6 +114,9 @@ A: Check the `data` folder in the same directory as the application executable.
 **Q: What happens if I enter an invalid date?**
 A: Flores will complain: `Bruh... Dates must be yyyy-mm-dd. Basic stuff.`
 
+**Q: Can the application be put into fullscreen?**
+A: No, the application is designed with a fixed window size and cannot be used in fullscreen mode.
+
 ## Command Summary
 
 | Action | Format | Example |
